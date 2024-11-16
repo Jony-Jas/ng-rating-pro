@@ -2,6 +2,5 @@
  * Public API Surface of ng-rating-pro
  */
 
-export * from './lib/ng-rating-pro.service';
 export * from './lib/ng-rating-pro.component';
 export * from './lib/ng-rating-pro.module';

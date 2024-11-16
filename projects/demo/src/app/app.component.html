@@ -1,2 +1,8 @@
 <div>{{ title }}</div>
-<ngRatingPro [scale]="10" [rating]="5.7" [readonly]="true" [size]="40"></ngRatingPro>
+<ngRatingPro
+  [scale]="10"
+  [rating]="5.7"
+  [readonly]="false"
+  [size]="40"
+  (ratingChange)="onRatingChange($event)"
+></ngRatingPro>

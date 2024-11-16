@@ -1,4 +1,11 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 export enum State {
   Empty = 'empty',
@@ -18,6 +25,8 @@ export class NgRatingProComponent implements OnInit {
   @Input() size: number = 20; // Default size
   @Input() spacing: number = 8; // Spacing between stars in viewBox units
   @Input() readonly: boolean = false;
+
+  @Output() ratingChange: EventEmitter<number> = new EventEmitter<number>();
 
   public states: State[] = [];
 
@@ -78,6 +87,7 @@ export class NgRatingProComponent implements OnInit {
   }
 
   public updateStates(allowHalf: boolean) {
+    this.ratingChange.emit(this.rating);
     this.rating = Math.round(this.rating * 2) / 2;
     this.states = Array.from({ length: this.scale }, (_, i) => {
       if (i < Math.floor(this.rating)) return State.Full;
