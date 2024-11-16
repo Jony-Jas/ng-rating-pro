@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 
-enum State {
+export enum State {
   Empty = 'empty',
   Half = 'half',
   Full = 'full',
@@ -77,7 +77,7 @@ export class NgRatingProComponent implements OnInit {
     }
   }
 
-  private updateStates(allowHalf: boolean) {
+  public updateStates(allowHalf: boolean) {
     this.rating = Math.round(this.rating * 2) / 2;
     this.states = Array.from({ length: this.scale }, (_, i) => {
       if (i < Math.floor(this.rating)) return State.Full;
