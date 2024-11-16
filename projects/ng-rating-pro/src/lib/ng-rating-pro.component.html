@@ -1,0 +1,65 @@
+<div
+  [style.width]="containerWidth + 'px'"
+  [style.height]="size + 'px'"
+  class="rating-container"
+>
+  <!-- Define star symbols -->
+  <svg style="display: none">
+    <symbol id="star-empty" viewBox="0 0 19 18" fill="#F1E8CA">
+      <path
+        d="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
+      />
+    </symbol>
+    <symbol id="star-full" viewBox="0 0 19 18" fill="#D3A81E">
+      <path
+        d="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
+      />
+    </symbol>
+    <symbol id="star-half" viewBox="0 0 19 18">
+      <!-- Left (filled) half of the star -->
+      <path
+        d="M9.5 0
+           L9.5 14.25
+           L3.916 17.186
+           L4.982 10.968
+           L0.465 6.564
+           L6.708 5.657
+           L9.5 0Z"
+        fill="#D3A81E"
+      />
+      <!-- Right (empty) half of the star -->
+      <path
+        d="M9.5 0
+           L9.5 14.25
+           L15.084 17.186
+           L14.018 10.968
+           L18.535 6.564
+           L12.292 5.657
+           L9.5 0Z"
+        fill="#F1E8CA"
+      />
+    </symbol>
+  </svg>
+
+  <!-- Rating display -->
+  <svg
+    [attr.viewBox]="'0 0 ' + totalWidth + ' ' + starHeight"
+    [style.width]="'100%'"
+    [style.height]="'100%'"
+    aria-hidden="true"
+    focusable="false"
+    class="rating"
+  >
+    <ng-container *ngFor="let state of states; let i = index">
+      <use
+        [id]="i + 1"
+        [attr.x]="getStarPosition(i)"
+        [attr.y]="0"
+        [attr.width]="starWidth"
+        [attr.height]="starHeight"
+        [attr.xlink:href]="'#star-' + state"
+        [ngStyle]="{ cursor: !readonly ? 'pointer' : 'default' }"
+      />
+    </ng-container>
+  </svg>
+</div>

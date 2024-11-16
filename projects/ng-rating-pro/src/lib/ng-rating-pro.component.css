@@ -1,0 +1,8 @@
+:host {
+  user-select: none;
+}
+
+.rating-container {
+  display: inline-block;
+  position: relative;
+}

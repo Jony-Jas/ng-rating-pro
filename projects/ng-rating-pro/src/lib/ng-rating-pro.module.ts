@@ -1,18 +1,11 @@
 import { NgModule } from '@angular/core';
 import { NgRatingProComponent } from './ng-rating-pro.component';
-import { RatingComponent } from './rating/rating.component';
-
-
+import { StarIconComponent } from './rating-icon/star-icon.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [
-    NgRatingProComponent,
-    RatingComponent
-  ],
-  imports: [
-  ],
-  exports: [
-    NgRatingProComponent
-  ]
+  declarations: [NgRatingProComponent, StarIconComponent],
+  imports: [CommonModule],
+  exports: [NgRatingProComponent],
 })
-export class NgRatingProModule { }
+export class NgRatingProModule {}
