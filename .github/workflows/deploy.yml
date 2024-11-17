@@ -1,0 +1,46 @@
+name: Continuous Deployment
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          RELEASE_VERSION=${GITHUB_REF#refs/tags/v}
+          if [ "$PACKAGE_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "Package version ($PACKAGE_VERSION) does not match release version ($RELEASE_VERSION)"
+            exit 1
+          fi
+
+      - name: Run tests
+        run: npx ng test ngRatingPro --no-watch --no-progress --browsers=ChromeHeadless
+
+      - name: Build library
+        run: npx ng build ngRatingPro
+
+      - name: Navigate to dist
+        run: cd dist/ng-rating-pro
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: dist/ng-rating-pro
