@@ -24,7 +24,7 @@ jobs:
 
       - name: Check version
         run: |
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          PACKAGE_VERSION=$(node -p "require('./projects/ng-rating-pro/package.json').version")
           RELEASE_VERSION=${GITHUB_REF#refs/tags/v}
           if [ "$PACKAGE_VERSION" != "$RELEASE_VERSION" ]; then
             echo "Package version ($PACKAGE_VERSION) does not match release version ($RELEASE_VERSION)"
