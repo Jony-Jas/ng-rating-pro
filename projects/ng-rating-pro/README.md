@@ -97,7 +97,7 @@ onRatingChange(newRating: number): void {
 
 ## Changelog
 
-See `CHANGELOG.md` for realease notes and changelog.
+See `Github Releases` for realease notes and changelog.
 
 ---
 
