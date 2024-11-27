@@ -1,11 +1,19 @@
 import {
   Component,
+  ComponentFactoryResolver,
+  ContentChildren,
   EventEmitter,
   HostListener,
   Input,
   OnInit,
   Output,
+  QueryList,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
+import { CustomRatingDirective } from './rating-icon/custom-rating.directive';
+import { StarIconComponent } from './rating-icon/star-icon.component';
+import { HeartIconComponent } from './rating-icon/heart-icon.component';
 
 export enum State {
   Empty = 'empty',
@@ -25,19 +33,55 @@ export class NgRatingProComponent implements OnInit {
   @Input() size: number = 20; // Default size
   @Input() spacing: number = 8; // Spacing between stars in viewBox units
   @Input() readonly: boolean = false;
+  @Input() iconName: string = 'star';
+
+  @ContentChildren(CustomRatingDirective)
+  ratingDirectives!: QueryList<CustomRatingDirective>;
+  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: true })
+  dynamicContainer!: ViewContainerRef;
 
   @Output() ratingChange: EventEmitter<number> = new EventEmitter<number>();
 
   public states: State[] = [];
 
-  starWidth: number = 19; // Original SVG viewBox width
-  starHeight: number = 18; // Original SVG viewBox height
+  starWidth: number = 24;
+  starHeight: number = 24;
   containerWidth: number = 0;
   totalWidth: number = 0;
 
   ngOnInit() {
-    this.updateDimensions();
     this.updateStates(this.allowHalf);
+  }
+
+  ngAfterContentInit() {
+    if (this.ratingDirectives.length !== 3) {
+      this.loadDynamicComponent();
+    } else {
+      this.ratingDirectives.forEach((directive) => {
+        directive.updateRating(this.iconName);
+      });
+      this.starHeight = this.ratingDirectives.first.iconViewBox[3];
+      this.starWidth = this.ratingDirectives.first.iconViewBox[2];
+    }
+    this.updateDimensions();
+  }
+
+  private loadDynamicComponent() {
+    const component = this.getComponent();
+    this.dynamicContainer.clear();
+    this.dynamicContainer.createComponent(component);
+    this.iconName = component.iconName;
+  }
+
+  private getComponent() {
+    switch (this.iconName) {
+      case 'star':
+        return StarIconComponent;
+      case 'heart':
+        return HeartIconComponent;
+      default:
+        return StarIconComponent;
+    }
   }
 
   updateDimensions() {

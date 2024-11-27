@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgRatingProComponent, State } from './ng-rating-pro.component';
 import { By } from '@angular/platform-browser';
+import { StarIconComponent } from './rating-icon/star-icon.component';
+import { HeartIconComponent } from './rating-icon/heart-icon.component';
 
 describe('NgRatingProComponent', () => {
   let component: NgRatingProComponent;
@@ -59,6 +61,55 @@ describe('NgRatingProComponent', () => {
       State.Empty,
       State.Empty,
     ]);
+  });
+
+  it('should load dynamic component if ratingDirectives length is not 3', () => {
+    spyOn<any>(component, 'loadDynamicComponent');
+    component.ratingDirectives = { length: 2 } as any;
+    component.ngAfterContentInit();
+    expect(component['loadDynamicComponent']).toHaveBeenCalled();
+  });
+
+  it('should update rating directives if ratingDirectives length is 3', () => {
+    const mockDirective = {
+      updateRating: jasmine.createSpy('updateRating'),
+      iconViewBox: [0, 0, 20, 20],
+    };
+    component.ratingDirectives = {
+      length: 3,
+      forEach: (callback: (directive: any) => void) => {
+        callback(mockDirective);
+      },
+      first: mockDirective,
+    } as any;
+    component.ngAfterContentInit();
+    expect(mockDirective.updateRating).toHaveBeenCalledWith(component.iconName);
+    expect(component.starHeight).toBe(20);
+    expect(component.starWidth).toBe(20);
+  });
+
+  it('should get the correct component based on iconName', () => {
+    component.iconName = 'star';
+    expect(component['getComponent']()).toBe(StarIconComponent);
+
+    component.iconName = 'heart';
+    expect(component['getComponent']()).toBe(HeartIconComponent);
+
+    component.iconName = 'unknown';
+    expect(component['getComponent']()).toBe(StarIconComponent);
+  });
+
+  it('should load dynamic component and set iconName', () => {
+    component.iconName = 'star';
+    const componentRef = {
+      instance: { iconName: 'star' },
+    };
+    spyOn(component.dynamicContainer, 'createComponent').and.returnValue(
+      componentRef as any
+    );
+    component['loadDynamicComponent']();
+    expect(component.dynamicContainer.createComponent).toHaveBeenCalled();
+    expect(component.iconName).toBe('star');
   });
 
   it('should correctly calculate star positions', () => {

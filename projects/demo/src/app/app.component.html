@@ -1,8 +1,54 @@
 <div>{{ title }}</div>
 <ngRatingPro
-  [scale]="10"
-  [rating]="5.7"
+  [scale]="5"
+  [rating]="4.3"
   [readonly]="false"
   [size]="40"
   (ratingChange)="onRatingChange($event)"
-></ngRatingPro>
+  [iconName]="'star-plus'"
+>
+  <svg:symbol
+    viewBox="0 0 19 18"
+    fill="#F1E8CA"
+    ngCustomRating
+    ngProjectAs="empty"
+  >
+    <path
+      d="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
+    />
+  </svg:symbol>
+  <svg:symbol
+    viewBox="0 0 19 18"
+    fill="#3fc02b"
+    ngCustomRating
+    ngProjectAs="full"
+  >
+    <path
+      d="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
+    />
+  </svg:symbol>
+  <svg:symbol viewBox="0 0 19 18" ngCustomRating ngProjectAs="half">
+    <!-- Left (filled) half of the star -->
+    <path
+      d="M9.5 0
+       L9.5 14.25
+       L3.916 17.186
+       L4.982 10.968
+       L0.465 6.564
+       L6.708 5.657
+       L9.5 0Z"
+      fill="#3fc02b"
+    />
+    <!-- Right (empty) half of the star -->
+    <path
+      d="M9.5 0
+       L9.5 14.25
+       L15.084 17.186
+       L14.018 10.968
+       L18.535 6.564
+       L12.292 5.657
+       L9.5 0Z"
+      fill="#F1E8CA"
+    />
+  </svg:symbol>
+</ngRatingPro>
